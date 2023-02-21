@@ -1,7 +1,20 @@
-BOT_TOKEN = "5218248239:AAEL11gdcIDMPZcwcTUWn0Hy65t-hlHpTdk"
+from typing import Optional
 
-TOKEN = "91c129528a38bd5fc3d3542d2dc3456d"
+from dotenv import dotenv_values
 
-TOKEN_V4 = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI5MWMxMjk1MjhhMzhiZDVmYzNkMzU0MmQyZGMzNDU2ZCIsInN1YiI6IjYzZjE2YmVkYTY3MjU0MDA4NjVkNDNlZiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0lTNxoEaWmm7gqhWEvLymG3eZQOD4JkoQucrKIXDkFg"
 
-DB_CONNECTION_STRING = 'postgresql+psycopg2://postgres:otabek00@localhost/cinema_bot'
+config: Optional[dict] = None
+
+BOT_TOKEN: Optional[str] = None
+TOKEN: Optional[str] = None
+TOKEN_V4: Optional[str] = None
+DB_CONNECTION_STRING: Optional[str] = None
+
+
+def load_env_config():
+    global config, BOT_TOKEN, TOKEN, TOKEN_V4, DB_CONNECTION_STRING
+    config = dotenv_values(".env")
+    BOT_TOKEN = config['BOT_TOKEN']
+    TOKEN = config['TOKEN']
+    TOKEN_V4 = config['TOKEN_V4']
+    DB_CONNECTION_STRING = config['DB_CONNECTION_STRING']
