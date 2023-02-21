@@ -11,10 +11,16 @@ from utils import send_message
 
 @bot.message_handler(commands=['start'])
 def start(message: telebot.types.Message):
-    db.create_user(User.create_from_tg_user(message.from_user))
-    bot.reply_to(message, messages.WELCOME_MESSAGE)
-    send_message.send_selection_language(message.chat.id)
-    bot.set_state(message.chat.id, State.LanguageSelection)
+    if db.is_user_exists(message.chat.id):
+        user = db.get_user_by_tg_id(message.chat.id)
+        redis_helper.set_to_redis(message.chat.id, user.lang)
+        send_message.send_main_menu(message.chat.id, user.lang)
+        bot.set_state(message.chat.id, State.Menu)
+    else:
+        bot.reply_to(message, messages.WELCOME_MESSAGE)
+        send_message.send_selection_language(message.chat.id)
+        bot.set_state(message.chat.id, State.LanguageSelection)
+        db.create_user(User.create_from_tg_user(message.from_user))
 
 
 @bot.message_handler(state=State.Menu)

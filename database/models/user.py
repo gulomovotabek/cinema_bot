@@ -29,6 +29,10 @@ class User(Base):
     def __repr__(self) -> str:
         return f"{self.username} -> {self.tg_id}"
 
+    @property
+    def lang(self):
+        return self.language.value
+
     @staticmethod
     def create_from_tg_user(from_user: TgUser):
         return User(
